@@ -17,9 +17,7 @@ class Dispatcher:
         self.scanner.addCmd(command, cmd_id)
 
     async def processMessage(self, msg):
-        print(f"processing {msg}")
         cmd_id = self.scanner.scan(msg.content)
-        print(f"matches {msg}")
         if cmd_id is not None:
             await self.dispatch(msg, None)
 
