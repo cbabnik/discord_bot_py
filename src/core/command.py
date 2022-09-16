@@ -12,21 +12,25 @@ class Command:
         self.private_ok = private_ok
 
     def execute(self, msg:Message):
-        if self.enabled == False:
-            return 
-        if config.MODE == "alpha" and msg.channel.id != config.CHANNEL_ID:
-            return
-        if config.MODE != "alpha" and msg.channel.id == config.ALPHA_CHANNEL_ID:
-            return
-        issue = self.sanity(msg)
+        if not self.sanity_quiet(msg):
+            return None
+        issue = self.sanity_loud(msg)
         if issue:
-            print(issue)
             return issue
         params = self.parse_params(msg)
         action = self.cb(*params, msg=msg)
         return action
 
-    def sanity(self, msg:Message):
+    def sanity_quiet(self, msg:Message):
+        if self.enabled == False:
+            return False
+        if config.MODE == "alpha" and msg.channel.id != config.CHANNEL_ID:
+            return False
+        if config.MODE != "alpha" and msg.channel.id == config.ALPHA_CHANNEL_ID:
+            return False
+        return True
+
+    def sanity_loud(self, msg:Message):
         if msg.channel.type == ChannelType.private:
             if not self.private_ok:
                 return Action(statement="This has to be in done in a public channel")

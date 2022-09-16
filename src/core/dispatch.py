@@ -21,5 +21,6 @@ class Dispatcher:
 
     async def dispatch(self, cmd, msg):
         action = cmd.execute(msg)
-        action.msg = msg
-        await self.actor.act(action)
+        if action:
+            action.msg = msg
+            await self.actor.act(action)
