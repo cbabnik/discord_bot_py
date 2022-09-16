@@ -12,24 +12,18 @@ class Command:
         self.private_ok = private_ok
 
     def execute(self, msg:Message):
-        print('executing')
         if self.enabled == False:
             return 
         if config.MODE == "alpha" and msg.channel.id != config.CHANNEL_ID:
             return
         if config.MODE != "alpha" and msg.channel.id == config.ALPHA_CHANNEL_ID:
             return
-        print('executing')
         issue = self.sanity(msg)
         if issue:
             print(issue)
             return issue
-        print('executing')
         params = self.parse_params(msg)
-        print('executing')
-        print(params)
         action = self.cb(*params, msg=msg)
-        print('executing')
         return action
 
     def sanity(self, msg:Message):
@@ -41,10 +35,7 @@ class Command:
         return None
 
     def parse_params(self, msg:Message):
-        print("test")
         match = re.match(self.pattern, msg.content, re.DOTALL+re.MULTILINE)
-        print("test")
         if not match:
-            print("Tried to execute command with unmatching message")
             raise Exception("Tried to execute command with unmatching message")
         return match.groups()
