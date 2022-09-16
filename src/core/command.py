@@ -4,12 +4,13 @@ from action import Action
 import config
 
 class Command:
-    def __init__(self, *, pattern, cb, enabled=True, auth=None, private_ok=False):
+    def __init__(self, *, pattern, cb, enabled=True, auth=None, private_ok=False, slash=True):
         self.pattern = pattern
         self.cb = cb
         self.enabled = enabled
         self.auth = auth
         self.private_ok = private_ok
+        self.slash=slash
 
     def execute(self, msg:Message):
         if not self.sanity_quiet(msg):

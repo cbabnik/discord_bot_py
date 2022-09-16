@@ -22,12 +22,23 @@ async def on_message(message):
     await dispatcher.processMessage(message)
 
 
+@client.hybrid_command(name="secret-cow-level")
+async def hybrid(ctx):
+    await ctx.send("moo!")
+
+@client.hybrid_command(name="balance")
+async def balance(ctx):
+    await ctx.send("Could this be a reset?")
+
+
 # temp inline commands
 from command import Command
 from action import Action
 def say(contents, msg):
-    print(contents)
     return Action(statement=contents)
 dispatcher.registerCommand(Command(pattern=r"\-?say (.+)", cb=say))
+def help(msg):
+    return Action(statement="No one will help you now")
+dispatcher.registerCommand(Command(pattern=r"\-?help", cb=help))
 
 client.run() # dead end
