@@ -1,10 +1,13 @@
 import discord
+from action import Action
+import config
 
 class Actor():
-    client:discord.Client  = None
-
-    def __init__(self, client):
+    def __init__(self, client:discord.Client):
         self.client = client
 
-    async def act(self, msg:discord.Message):
-        await msg.channel.send(content="I'm dead, ok?")
+    async def act(self, action:Action):
+        if (action.msg.channel):
+            await action.msg.channel.send(action.statement)
+        else:
+            await self.main_channel.send(action.statement)
